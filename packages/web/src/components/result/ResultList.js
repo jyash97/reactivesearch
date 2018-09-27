@@ -77,6 +77,7 @@ ResultList.propTypes = {
 	innerClass: types.style,
 	target: types.stringRequired,
 	onData: types.func,
+	scrollTarget: types.string,
 };
 
 ResultList.defaultProps = {

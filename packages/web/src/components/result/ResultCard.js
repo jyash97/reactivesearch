@@ -68,6 +68,7 @@ ResultCard.propTypes = {
 	innerClass: types.style,
 	target: types.stringRequired,
 	onData: types.func,
+	scrollTarget: types.string,
 };
 
 ResultCard.defaultProps = {
