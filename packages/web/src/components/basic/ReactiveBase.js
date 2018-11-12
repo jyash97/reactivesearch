@@ -66,7 +66,7 @@ class ReactiveBase extends Component {
 			app: props.app,
 			credentials,
 			type: this.type,
-			beforeSend: props.beforeSend,
+			transformRequest: props.transformRequest,
 			analytics: props.analytics,
 		};
 
@@ -77,22 +77,26 @@ class ReactiveBase extends Component {
 			queryParams = props.queryParams || '';
 		}
 
-		this.params = new URLSearchParams(queryParams);
+		const params = new URLSearchParams(queryParams);
 		let selectedValues = {};
 
 		try {
-			Array.from(this.params.keys()).forEach((key) => {
+			Array.from(params.keys()).forEach((key) => {
 				selectedValues = {
 					...selectedValues,
-					[key]: { value: JSON.parse(this.params.get(key)) },
+					[key]: { value: JSON.parse(params.get(key)) },
 				};
 			});
 		} catch (e) {
+			console.error('REACTIVESEARCH - An error occured while parsing the URL state.', e);
 			selectedValues = {};
 		}
 
 		const { headers = {}, themePreset } = props;
 		const appbaseRef = Appbase(config);
+		if (this.props.transformRequest) {
+			appbaseRef.transformRequest = this.props.transformRequest;
+		}
 
 		const initialState = {
 			config: { ...config, mapKey: props.mapKey, themePreset },
@@ -117,7 +121,6 @@ class ReactiveBase extends Component {
 			>
 				<Provider store={this.store}>
 					<URLParamsProvider
-						params={this.params}
 						headers={this.props.headers}
 						style={this.props.style}
 						className={this.props.className}
@@ -147,7 +150,7 @@ ReactiveBase.propTypes = {
 	themePreset: types.themePreset,
 	type: types.string,
 	url: types.string,
-	beforeSend: types.func,
+	transformRequest: types.func,
 	mapKey: types.string,
 	style: types.style,
 	className: types.string,
