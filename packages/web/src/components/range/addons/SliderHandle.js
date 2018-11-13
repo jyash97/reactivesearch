@@ -1,7 +1,7 @@
 import React from 'react';
 
 const SliderHandle = ({
-	className, style, tooltipTrigger, ...passProps
+	className, style, tooltipTrigger, renderTooltipData, ...passProps
 }) => {
 	if (tooltipTrigger) {
 		let tooltipClassname = '';
@@ -21,7 +21,7 @@ const SliderHandle = ({
 		}
 		return (
 			<button style={style} className={className} {...passProps} >
-				<span className={tooltipClassname}>{passProps['aria-valuenow']}</span>
+				<span className={tooltipClassname}>{renderTooltipData ? renderTooltipData(passProps['aria-valuenow']) : passProps['aria-valuenow']}</span>
 			</button>
 		);
 	}
