@@ -41,14 +41,11 @@ if (process.env.NODE_ENV === 'production') {
 		minimizer: [
 			// we specify a custom UglifyJsPlugin here to get source maps in production
 			new UglifyJsPlugin({
-				cache: true,
-				parallel: true,
-				uglifyOptions: {
-					compress: false,
-					ecma: 6,
-					mangle: true,
-				},
-				sourceMap: true,
+				compress: { warnings: false },
+				mangle: true,
+				sourcemap: false,
+				beautify: false,
+				dead_code: true,
 			}),
 		],
 	};
